@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mobil Uygulama Tasarımı</title>
+
+  <!-- Web App Manifest -->
+  <link rel="manifest" href="#">
+
+  <!-- Styles (CSS) -->
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+
+    .app-container {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    .app-header {
+      background-color: #4CAF50;
+      color: white;
+      text-align: center;
+      padding: 15px;
+    }
+
+    .app-content {
+      flex: 1;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .card {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .app-footer {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <h1>Mobil Uygulama</h1>
+    </header>
+    <main class="app-content">
+      <div class="card">
+        <h2>Başlık 1</h2>
+        <p>Buraya açıklama gelecek.</p>
+        <button onclick="buttonClick()">Devam Et</button>
+      </div>
+      <div class="card">
+        <h2>Başlık 2</h2>
+        <p>Buraya başka bir açıklama gelecek.</p>
+        <button onclick="buttonClick()">Devam Et</button>
+      </div>
+    </main>
+    <footer class="app-footer">
+      <p>© 2025 Mobil Uygulama</p>
+    </footer>
+  </div>
+
+  <!-- Script (JavaScript) -->
+  <script>
+    // Butona tıklama fonksiyonu
+    function buttonClick() {
+      alert('Butona tıkladınız!');
+    }
+
+    // Web App Install
+    let deferredPrompt;
+    
+    window.addEventListener('beforeinstallprompt', (event) => {
+      event.preventDefault();
+      deferredPrompt = event;
+
+      // Install butonunu göstermek
+      const installButton = document.createElement('button');
+      installButton.innerText = 'Uygulamayı Masaüstüne Kur';
+      document.body.appendChild(installButton);
+
+      installButton.addEventListener('click', () => {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('Kullanıcı uygulamayı yükledi.');
+          } else {
+            console.log('Kullanıcı yüklemeyi reddetti.');
+          }
+          deferredPrompt = null;
+        });
+      });
+    });
+
+    // Service Worker için kayıt
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js').then((registration) => {
+        console.log('Service Worker başarıyla kayıt edildi:', registration);
+      }).catch((error) => {
+        console.log('Service Worker kayıt hatası:', error);
+      });
+    }
+  </script>
+
+  <!-- Service Worker Script -->
+  <script>
+    // Service Worker Kodları
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
+        console.log('Service Worker başarıyla kayıt edildi:', registration);
+      }).catch(function(error) {
+        console.log('Service Worker kayıt hatası:', error);
+      });
+    }
+  </script>
+
+  <!-- Web App Manifest Dosyası içeriği -->
+  <script>
+    const manifest = {
+      "name": "Mobil Uygulama",
+      "short_name": "Uygulama",
+      "description": "Mobil uygulama tasarımı örneği.",
+      "start_url": "index.html",
+      "display": "standalone",
+      "background_color": "#f4f4f4",
+      "theme_color": "#4CAF50",
+      "icons": [
+        {
+          "src": "icons/icon-192x192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        },
+        {
+          "src": "icons/icon-512x512.png",
+          "sizes": "512x512",
+          "type": "image/png"
+        }
+      ]
+    };
+
+    // Manifest dosyasını dinamik olarak ekleme
+    const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+    const manifestUrl = URL.createObjectURL(manifestBlob);
+    document.querySelector('link[rel="manifest"]').setAttribute('href', manifestUrl);
+  </script>
+</body>
+</html>
