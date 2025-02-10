@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Not Defteri</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .notepad-container {
+      width: 100%;
+      max-width: 500px;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    textarea {
+      width: 100%;
+      height: 300px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      resize: none;
+      font-size: 14px;
+    }
+    .button-container {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+    button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      color: white;
+    }
+    .clear-button {
+      background-color: #e74c3c;
+    }
+    .clear-button:hover {
+      background-color: #c0392b;
+    }
+    .save-button {
+      background-color: #3498db;
+    }
+    .save-button:hover {
+      background-color: #2980b9;
+    }
+    .download-message {
+      background-color: #27ae60;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      border-radius: 5px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    .download-message:hover {
+      background-color: #1e8449;
+    }
+  </style>
+</head>
+<body>
+  <div class="notepad-container">
+    <h1>Not Defteri</h1>
+    <textarea id="noteArea" placeholder="Notlarınızı buraya yazın..."></textarea>
+    <div class="button-container">
+      <button class="clear-button" onclick="clearNotes()">Temizle</button>
+      <button class="save-button" onclick="saveNotes()">Kaydet</button>
+    </div>
+    <div class="download-message" onclick="downloadPage()">
+      İndirmek için tıklayın
+    </div>
+  </div>
+
+  <script>
+    function clearNotes() {
+      document.getElementById('noteArea').value = '';
+    }
+
+    function saveNotes() {
+      const notes = document.getElementById('noteArea').value;
+      if (notes.trim() === '') {
+        alert('Kaydedilecek bir not bulunamadı!');
+        return;
+      }
+      const blob = new Blob([notes], { type: 'text/plain' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'notes.txt';
+      link.click();
+    }
+
+    function downloadPage() {
+      const link = document.createElement('a');
+      link.href = 'index.html'; // Bu dosya adını projenize uygun hale getirin.
+      link.download = 'index.html';
+      link.click();
+    }
+  </script>
+</body>
+</html>
